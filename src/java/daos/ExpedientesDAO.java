@@ -20,61 +20,156 @@ import java.util.Base64;
 public class ExpedientesDAO extends BaseDAO<Expediente> {
 
     @Override
-    public Expediente autenticar(String string, String string1) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
     public ArrayList<Expediente> consultar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<Expediente> listaExpediente = new ArrayList<>();
+        try ( Connection conexion = this.generarConexion()) {
+            Statement comandoSQL = conexion.createStatement();
+
+            String codigoSQL = String.format("SELECT imagen, id_paciente FROM expediente");
+
+            ResultSet resultado = comandoSQL.executeQuery(codigoSQL);
+
+            while (resultado.next()) {
+                Integer idPaciente = resultado.getInt("id_paciente");
+                Blob blob = resultado.getBlob("imagen");
+                byte[] imageBytes = blob.getBytes(1, (int) blob.length());
+                String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
+                String img = "data:image/jpg;base64," + encodedImage;
+
+                Expediente trabajadorSalud = new Expediente(img, idPaciente);
+                System.out.println(trabajadorSalud);
+                listaExpediente.add(trabajadorSalud);
+            }
+
+            conexion.close();
+            return listaExpediente;
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            return listaExpediente;
+        }
     }
 
     @Override
     public ArrayList<Expediente> consultarPorId(Integer idPaciente) {
         ArrayList<Expediente> listaExpedientes = new ArrayList<>();
-        try{
-            Connection conexion = this.generarConexion();
+        try ( Connection conexion = this.generarConexion()) {
             Statement comando = conexion.createStatement();
             String codigoSQL = String.format("SELECT imagen FROM expediente WHERE id_paciente = '%d'",
                     idPaciente
             );
+
             ResultSet resultado = comando.executeQuery(codigoSQL);
-            while(resultado.next()){
+
+            while (resultado.next()) {
                 Blob blob = resultado.getBlob("imagen");
-                byte[] imageBytes=blob.getBytes(1, (int)blob.length());
-                String encodedImage=Base64.getEncoder().encodeToString(imageBytes);
-                String img = "data:image/jpg;base64,"+ encodedImage;
+                byte[] imageBytes = blob.getBytes(1, (int) blob.length());
+                String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
+                String img = "data:image/jpg;base64," + encodedImage;
 
                 Expediente expediente = new Expediente(img, idPaciente);
                 listaExpedientes.add(expediente);
             }
+
             conexion.close();
             System.out.println("Se consultaron los expedientes");
             return listaExpedientes;
-        } catch (SQLException ex){
+        } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             return listaExpedientes;
         }
     }
 
     @Override
-    public Expediente consultar(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Expediente consultar(Integer idPaciente) {
+        Expediente expediente = null;
+        try ( Connection conexion = this.generarConexion()) {
+
+            Statement comandoSQL = conexion.createStatement();
+
+            String codigoSQL = String.format("SELECT imagen, id_paciente FROM expediente WHERE id_paciente = '%d'",
+                    idPaciente
+            );
+
+            ResultSet resultado = comandoSQL.executeQuery(codigoSQL);
+
+            if (resultado.next()) {
+                Blob blob = resultado.getBlob("imagen");
+                byte[] imageBytes = blob.getBytes(1, (int) blob.length());
+                String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
+                String img = "data:image/jpg;base64," + encodedImage;
+
+                expediente = new Expediente(img, idPaciente);
+            }
+
+            conexion.close();
+            return expediente;
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            return expediente;
+        }
     }
 
     @Override
-    public void insertar(Expediente entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean insertar(Expediente entidad) {
+        try ( Connection conexion = this.generarConexion()) {
+            Statement comandoSql = conexion.createStatement();
+
+            String codigoSQL = String.format("INSERT INTO trabajador_salud (imagen, id_paciente) "
+                    + "VALUES ('%s', '%d');",
+                    entidad.getImagen(),
+                    entidad.getPacienteId());
+
+            int numeroRegistrosAfectados = comandoSql.executeUpdate(codigoSQL);
+
+            conexion.close();
+
+            return numeroRegistrosAfectados == 1;
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            return false;
+        }
     }
 
     @Override
-    public void actualizar(Expediente entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean actualizar(Expediente entidad) {
+        try ( Connection conexion = this.generarConexion()) {
+            Statement comandoSql = conexion.createStatement();
+
+            String codigoSQL = String.format("UPDATE expediente SET imagen='%s'"
+                    + "WHERE id_paciente = %d;",
+                    entidad.getImagen(),
+                    entidad.getPacienteId());
+
+            int numeroRegistrosAfectados = comandoSql.executeUpdate(codigoSQL);
+            conexion.close();
+
+            return numeroRegistrosAfectados == 1;
+
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            return false;
+        }
     }
 
     @Override
-    public void eliminar(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean eliminar(Integer id) {
+        try ( Connection conexion = this.generarConexion()) {
+
+            Statement comandoSql = conexion.createStatement();
+
+            String codigoSQL = String.format("DELETE FROM expediente WHERE id_paciente = %d;",
+                    id);
+
+            int numeroRegistrosAfectados = comandoSql.executeUpdate(codigoSQL);
+
+            conexion.close();
+
+            return numeroRegistrosAfectados == 1;
+
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            return false;
+        }
     }
-    
+
 }

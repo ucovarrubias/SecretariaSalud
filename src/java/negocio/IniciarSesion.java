@@ -4,14 +4,11 @@
  */
 package negocio;
 
-import daos.BaseDAO;
 import daos.TrabajadorSaludDAO;
 import dominio.Persona;
-import dominio.TrabajadorSalud;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,40 +22,39 @@ import javax.servlet.http.HttpSession;
 public class IniciarSesion extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher rd;
         HttpSession session = request.getSession();
         String siguiente;
-        Persona trabajadorSalud = new TrabajadorSalud();
-        
+        Persona trabajadorSalud;
+
         //Obtiene de la solicitud los datos del trabajador de la salud y los 
         //guarda al bean TrabajadorSalud
         String curp = request.getParameter("cedula");
         String contrasenia = request.getParameter("contrasenia");
-        
+
         //Crea el objeto para acceder a la base de datos
-        BaseDAO<TrabajadorSalud> fachada = new TrabajadorSaludDAO();
+        TrabajadorSaludDAO fachada = new TrabajadorSaludDAO();
         trabajadorSalud = fachada.autenticar(curp, contrasenia);
-        
+
         //Si el trabajador de la salud existe en la base de datos
-        if(trabajadorSalud != null){
+        if (trabajadorSalud != null) {
             //Crea la variable de solicitud, con el trabajador existente
             request.setAttribute("trabajadorSalud", trabajadorSalud);
             session.setAttribute("trabajadorSalud", trabajadorSalud);
-            
+
             //Establece la siguiente página JSP a cargar
             siguiente = "home.jsp";
             rd = request.getRequestDispatcher(siguiente);
-            
+
             //Redirecciona a la página JSP
             rd.forward(request, response);
         } else {
@@ -72,10 +68,10 @@ public class IniciarSesion extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -86,10 +82,10 @@ public class IniciarSesion extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
