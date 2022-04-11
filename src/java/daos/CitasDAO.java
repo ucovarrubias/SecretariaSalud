@@ -15,12 +15,7 @@ import java.util.ArrayList;
  *
  * @author ucova
  */
-public class CitasDAO extends BaseDAO<Cita>{
-
-    @Override
-    public Cita autenticar(String string, String string1) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+public class CitasDAO extends BaseDAO<Cita> {
 
     @Override
     public ArrayList<Cita> consultar() {
@@ -33,31 +28,35 @@ public class CitasDAO extends BaseDAO<Cita>{
     }
 
     @Override
-    public void insertar(Cita entidad) {
+    public boolean insertar(Cita entidad) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void actualizar(Cita entidad) {
+    public boolean actualizar(Cita entidad) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void eliminar(Integer id) {
+    public boolean eliminar(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public ArrayList<Cita> consultarPorId(Integer idTrabajador) {
-        ArrayList<Cita> listaCitas = new ArrayList<>();
-        try{
-            Connection conexion = this.generarConexion();
+        ArrayList<Cita> listaCitas = null;
+
+        try ( Connection conexion = this.generarConexion()) {
+            listaCitas = new ArrayList<>();
+
             Statement comando = conexion.createStatement();
             String codigoSQL = String.format("SELECT id_cita, hora_cita, acceso_expediente, id_paciente FROM citas WHERE id_trabajador_salud = '%d'",
                     idTrabajador
             );
+
             ResultSet resultado = comando.executeQuery(codigoSQL);
-            while(resultado.next()){
+
+            while (resultado.next()) {
                 Integer id = resultado.getInt("id_cita");
                 String horaCita = resultado.getString("hora_cita");
                 Boolean accesoExpediente = resultado.getBoolean("acceso_expediente");
@@ -67,14 +66,16 @@ public class CitasDAO extends BaseDAO<Cita>{
                 System.out.println(cita);
                 listaCitas.add(cita);
             }
+
             conexion.close();
             System.out.println("Se consultaron las citas");
+
             return listaCitas;
-        } catch (SQLException ex){
+
+        } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             return listaCitas;
         }
     }
-    
-    
+
 }
