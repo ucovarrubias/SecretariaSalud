@@ -18,7 +18,8 @@ import java.util.logging.Logger;
 public abstract class BaseDAO<T> {
     private static final String CADENA_CONEXION = "jdbc:mysql://localhost:3306/secretaria_salud?autoReconnet=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private static final String USUARIO = "root";
-    private static final String CONTRASENIA = "admin";
+    //private static final String CONTRASENIA = "admin";
+    private static final String CONTRASENIA = "password";
     private static final String CLASSNAME="com.mysql.cj.jdbc.Driver";
     
     protected Connection generarConexion() throws SQLException{
