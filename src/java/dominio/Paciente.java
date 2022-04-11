@@ -5,36 +5,24 @@
 package dominio;
 
 import java.sql.Date;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  *
  * @author ucova
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class Paciente extends Persona {
+
     private Integer tutor;
 
-    public Paciente() {
-    }
-
-    public Paciente(Integer id, String nombre, String curp, Date fechaNacimiento, String huellaDactilar) {
-        super(id, nombre, curp, fechaNacimiento, huellaDactilar);
-    }
-
-    public Paciente(Integer id, Integer tutor, String nombre, String curp, Date fechaNacimiento, String huellaDactilar) {
+    @Builder
+    public Paciente(Integer id, String cedulaProfesional, String contrasenia, String nombre, String curp, Date fechaNacimiento, String huellaDactilar, Integer tutor) {
         super(id, nombre, curp, fechaNacimiento, huellaDactilar);
         this.tutor = tutor;
     }
 
-    public Integer getTutor() {
-        return tutor;
-    }
-
-    public void setTutor(Integer tutor) {
-        this.tutor = tutor;
-    }
-
-    @Override
-    public String toString() {
-        return "Paciente{" + "tutor=" + tutor + '}';
-    }
 }
