@@ -24,40 +24,41 @@ import javax.servlet.http.HttpSession;
 public class ConsultarCitas extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        RequestDispatcher rd;
-
-        BaseDAO<Cita> citasDAO = new CitasDAO();
-        //Cita cita = new Cita();
-
-        TrabajadorSalud ts = (TrabajadorSalud) session.getAttribute("trabajadorSalud");
-
-        ArrayList<Cita> listaCitas = citasDAO.consultarPorId(ts.getId());
-        System.out.println(listaCitas);
-
-        request.setAttribute("listaCitas", listaCitas);
-        String siguiente = "citas.jsp";
-        rd = request.getRequestDispatcher(siguiente);
-        rd.forward(request, response);
+       HttpSession session = request.getSession();
+       RequestDispatcher rd;
+       
+       BaseDAO<Cita> citasDAO = new CitasDAO();
+       //Cita cita = new Cita();
+       
+       TrabajadorSalud ts = (TrabajadorSalud) session.getAttribute("trabajadorSalud");
+       
+       ArrayList<Cita> listaCitas = citasDAO.consultarPorId(ts.getId());
+       System.out.println(listaCitas);
+       
+       request.setAttribute("listaCitas", listaCitas);
+       String siguiente = "citas.jsp";
+       rd = request.getRequestDispatcher(siguiente);
+       rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -68,10 +69,10 @@ public class ConsultarCitas extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

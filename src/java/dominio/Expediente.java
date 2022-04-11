@@ -4,18 +4,40 @@
  */
 package dominio;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 /**
  *
  * @author ucova
  */
-@Data
-@AllArgsConstructor
 public class Expediente {
-
     private String imagen;
     private Integer pacienteId;
 
+    public Expediente() {
+    }
+
+    public Expediente(String imagen, Integer pacienteId) {
+        this.imagen = imagen;
+        this.pacienteId = pacienteId;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public Integer getPacienteId() {
+        return pacienteId;
+    }
+
+    public void setPacienteId(Integer pacienteId) {
+        this.pacienteId = pacienteId;
+    }
+
+    @Override
+    public String toString() {
+        return "Expediente{" + "imagen=" + imagen + ", pacienteId=" + pacienteId + '}';
+    }
 }
