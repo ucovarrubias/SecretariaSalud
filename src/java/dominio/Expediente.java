@@ -11,6 +11,7 @@ import java.io.File;
  * @author ucova
  */
 public class Expediente {
+    private String nombre;
     private File archivo;
     private String tipoDocumento;
     private String descripcion;
@@ -19,13 +20,22 @@ public class Expediente {
     public Expediente() {
     }
 
-    public Expediente(File archivo, String tipoDocumento, String descripcion, Integer pacienteId) {
+    public Expediente(String nombre, File archivo, String tipoDocumento, String descripcion, Integer pacienteId) {
+        this.nombre = nombre;
         this.archivo = archivo;
         this.tipoDocumento = tipoDocumento;
         this.descripcion = descripcion;
         this.pacienteId = pacienteId;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
     public File getArchivo() {
         return archivo;
     }
@@ -60,6 +70,6 @@ public class Expediente {
 
     @Override
     public String toString() {
-        return "Expediente{" + "archivo=" + archivo + ", tipoDocumento=" + tipoDocumento + ", descripcion=" + descripcion + ", pacienteId=" + pacienteId + '}';
+        return "Expediente{" + "nombre=" + nombre + ", archivo=" + archivo + ", tipoDocumento=" + tipoDocumento + ", descripcion=" + descripcion + ", pacienteId=" + pacienteId + '}';
     }
 }

@@ -41,7 +41,7 @@
                         for(Expediente e: listaExpediente){ 
                     %>    
                     <tr>
-                        <td><embed src="<%= e.getArchivo() %>"></td>
+                        <td><a href= "<%= e.getNombre() %>"></td>
                         <td><%= e.getTipoDocumento() %></td>
                         <td><%= e.getDescripcion() %></td>
                     </tr>    

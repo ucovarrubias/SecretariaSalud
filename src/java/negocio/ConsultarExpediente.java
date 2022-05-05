@@ -47,9 +47,7 @@ public class ConsultarExpediente extends HttpServlet {
         request.setAttribute("listaExpediente", listaExpediente);
         String siguiente = "expediente.jsp";
         rd = request.getRequestDispatcher(siguiente);
-        rd.forward(request, response);
-        
-        
+        rd.forward(request, response);        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

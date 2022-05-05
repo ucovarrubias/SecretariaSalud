@@ -43,9 +43,10 @@ public class ExpedientesDAO extends BaseDAO<Expediente> {
                     idPaciente
             );
             ResultSet resultado = comando.executeQuery(codigoSQL);
-            while(resultado.next()){           
-                File file  = new File("archivo");
-                try (FileOutputStream fos = new FileOutputStream("archivo")){
+            while(resultado.next()){ 
+                String nombre = resultado.getString("nombre");
+                File file  = new File(nombre);
+                try (FileOutputStream fos = new FileOutputStream(file)){
                     byte[] buffer = new byte[1024];
                     InputStream is = resultado.getBinaryStream("archivo");
                     while(is.read(buffer) > 0){
@@ -62,7 +63,7 @@ public class ExpedientesDAO extends BaseDAO<Expediente> {
                 String tipoDocumento = resultado.getString("TIPO_ARCHIVO");
                 String descripcion = resultado.getString("descripcion");
 
-                Expediente expediente = new Expediente(file, tipoDocumento, descripcion, idPaciente);
+                Expediente expediente = new Expediente(nombre, file, tipoDocumento, descripcion, idPaciente);
                 listaExpedientes.add(expediente);
             }
             conexion.close();
