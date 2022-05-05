@@ -35,12 +35,12 @@ public class ExpedientesDAO extends BaseDAO<Expediente> {
         try{
             Connection conexion = this.generarConexion();
             Statement comando = conexion.createStatement();
-            String codigoSQL = String.format("SELECT imagen FROM expediente WHERE id_paciente = '%d'",
+            String codigoSQL = String.format("SELECT archivo FROM expediente WHERE id_paciente = '%d'",
                     idPaciente
             );
             ResultSet resultado = comando.executeQuery(codigoSQL);
             while(resultado.next()){
-                Blob blob = resultado.getBlob("imagen");
+                Blob blob = resultado.getBlob("archivo");
                 byte[] imageBytes=blob.getBytes(1, (int)blob.length());
                 String encodedImage=Base64.getEncoder().encodeToString(imageBytes);
                 String img = "data:image/jpg;base64,"+ encodedImage;
