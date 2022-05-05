@@ -10,7 +10,6 @@ import daos.ExpedientesDAO;
 import dominio.Cita;
 import dominio.Expediente;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;

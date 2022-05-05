@@ -50,22 +50,24 @@
                             for(Cita c: listaCitas){ 
                     %>
                     <tbody>
-                        <td class="p-1"><%= c.getHoraCita() %></td>
-                        <td class="p-1"><%= c.getAccesoExpediente()%></td>
-                        <td class="p-1"><%= c.getNombrePaciente()%></td>
-                        <td class="p-1">
-                            <form action="consultarExpediente?id=<%= c.getNombrePaciente()%>" method="POST">
-                                <button type="submit" class="p-3">Consultar expediente</button>
+
+                        <td><%= c.getHoraCita() %></td>
+                        <td><%= c.getAccesoExpediente()%></td>
+                        <td><%= c.getNombrePaciente()%></td>
+                        <td>
+                            <form action="consultarExpediente" method="POST">
+                                <input type="hidden" name="id" value="<%= c.getPacienteId()%>" />
+                                <button type="submit">Consultar expediente</button>
+
                             </form>
                         </td>
                     <tbody>
 
-                
                 <%
                 }
             }
         %>
-        </table>
+                </table>
             </div>
         </div>
     </body>

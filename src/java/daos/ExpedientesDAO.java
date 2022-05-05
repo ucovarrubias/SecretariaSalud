@@ -5,6 +5,10 @@
 package daos;
 
 import dominio.Expediente;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -35,17 +39,30 @@ public class ExpedientesDAO extends BaseDAO<Expediente> {
         try{
             Connection conexion = this.generarConexion();
             Statement comando = conexion.createStatement();
-            String codigoSQL = String.format("SELECT archivo FROM expediente WHERE id_paciente = '%d'",
+            String codigoSQL = String.format("SELECT * FROM expediente WHERE id_paciente = '%d'",
                     idPaciente
             );
             ResultSet resultado = comando.executeQuery(codigoSQL);
-            while(resultado.next()){
-                Blob blob = resultado.getBlob("archivo");
-                byte[] imageBytes=blob.getBytes(1, (int)blob.length());
-                String encodedImage=Base64.getEncoder().encodeToString(imageBytes);
-                String img = "data:image/jpg;base64,"+ encodedImage;
+            while(resultado.next()){           
+                File file  = new File("archivo");
+                try (FileOutputStream fos = new FileOutputStream("archivo")){
+                    byte[] buffer = new byte[1024];
+                    InputStream is = resultado.getBinaryStream("archivo");
+                    while(is.read(buffer) > 0){
+                        fos.write(buffer);
+                    }
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            
+//                Blob blob = resultado.getBlob("archivo");
+//                byte[] imageBytes=blob.getBytes(1, (int)blob.length());
+//                String encodedImage=Base64.getEncoder().encodeToString(imageBytes);
+//                String img = "data:image/jpg;base64,"+ encodedImage;
+                String tipoDocumento = resultado.getString("TIPO_ARCHIVO");
+                String descripcion = resultado.getString("descripcion");
 
-                Expediente expediente = new Expediente(img, idPaciente);
+                Expediente expediente = new Expediente(file, tipoDocumento, descripcion, idPaciente);
                 listaExpedientes.add(expediente);
             }
             conexion.close();
