@@ -12,17 +12,17 @@ public class Cita {
     private Integer id;
     private String horaCita;
     private Boolean accesoExpediente;
-    private Integer pacienteId;
+    private String nombrePaciente;
     private Integer trabajadorSaludId;
 
     public Cita() {
     }
 
-    public Cita(Integer id, String horaCita, Boolean accesoExpediente, Integer pacienteId, Integer trabajadorSaludId) {
+    public Cita(Integer id, String horaCita, Boolean accesoExpediente, String nombrePaciente, Integer trabajadorSaludId) {
         this.id = id;
         this.horaCita = horaCita;
         this.accesoExpediente = accesoExpediente;
-        this.pacienteId = pacienteId;
+        this.nombrePaciente = nombrePaciente;
         this.trabajadorSaludId = trabajadorSaludId;
     }
 
@@ -50,12 +50,12 @@ public class Cita {
         this.accesoExpediente = accesoExpediente;
     }
 
-    public Integer getPacienteId() {
-        return pacienteId;
+    public String getNombrePaciente() {
+        return nombrePaciente;
     }
 
-    public void setPacienteId(Integer pacienteId) {
-        this.pacienteId = pacienteId;
+    public void setNombrePaciente(String nombrePaciente) {
+        this.nombrePaciente = nombrePaciente;
     }
 
     public Integer getTrabajadorSaludId() {
@@ -68,6 +68,6 @@ public class Cita {
 
     @Override
     public String toString() {
-        return "Cita{" + "horaCita=" + horaCita + ", accesoExpediente=" + accesoExpediente + ", pacienteId=" + pacienteId + ", trabajadorSaludId=" + trabajadorSaludId + '}';
+        return "Cita{" + "horaCita=" + horaCita + ", accesoExpediente=" + accesoExpediente + ", pacienteId=" + nombrePaciente + ", trabajadorSaludId=" + trabajadorSaludId + '}';
     }
 }
