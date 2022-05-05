@@ -1,28 +1,31 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package negocio;
 
 import daos.BaseDAO;
-import daos.TrabajadorSaludDAO;
-import dominio.Persona;
+import daos.CitasDAO;
+import dominio.Cita;
 import dominio.TrabajadorSalud;
-import java.io.IOException;
 import jakarta.servlet.RequestDispatcher;
+import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.util.Date;
 
 /**
  *
- * @author ucova
+ * @author Carlos
  */
-//@WebServlet(name = "iniciarSesion", urlPatterns = {"/IniciarSesion"})
-public class IniciarSesion extends HttpServlet {
+@WebServlet(name = "ConsultarFecha", urlPatterns = {"/ConsultarFecha"})
+public class ConsultarFecha extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,37 +38,43 @@ public class IniciarSesion extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher rd;
         HttpSession session = request.getSession();
-        String siguiente;
-        Persona trabajadorSalud = new TrabajadorSalud();
+        RequestDispatcher rd;
         
-        //Obtiene de la solicitud los datos del trabajador de la salud y los 
-        //guarda al bean TrabajadorSalud
-        String curp = request.getParameter("cedula");
-        String contrasenia = request.getParameter("contrasenia");
+        //Integer id = Integer.parseInt(request.getParameter("id"));
         
-        //Crea el objeto para acceder a la base de datos
-        BaseDAO<TrabajadorSalud> fachada = new TrabajadorSaludDAO();
-        trabajadorSalud = fachada.autenticar(curp, contrasenia);
+        TrabajadorSalud ts = (TrabajadorSalud) session.getAttribute("trabajadorSalud");
         
-        //Si el trabajador de la salud existe en la base de datos
-        if(trabajadorSalud != null){
-            //Crea la variable de solicitud, con el trabajador existente
-            request.setAttribute("trabajadorSalud", trabajadorSalud);
-            session.setAttribute("trabajadorSalud", trabajadorSalud);
-            
-            //Establece la siguiente página JSP a cargar
-            siguiente = "home.jsp";
-            rd = request.getRequestDispatcher(siguiente);
-            
-            //Redirecciona a la página JSP
-            rd.forward(request, response);
-        } else {
-            request.setAttribute("errorMessage", "CURP o contraseña incorrecta. Intente de nuevo");
-            rd = request.getRequestDispatcher("index.jsp");
-            rd.forward(request, response);
+        System.out.println(request.getParameter("fecha"));
+        //Date date = new Date(request.getParameter("fecha"));
+        
+        BaseDAO<Cita> citasDao = new CitasDAO();
+        
+        ArrayList<Cita> listaCitas = citasDao.consultarPorId(ts.getId());
+        
+        ArrayList<Cita> listaCitasFecha = new ArrayList<>();
+        
+        for (Cita cita : listaCitas) {
+            System.out.println(cita.getHoraCita().toString());
+            String[] separarFecha = cita.getHoraCita().toString().split(" ");
+            if (request.getParameter("fecha").equalsIgnoreCase(separarFecha[0])) {
+                listaCitasFecha.add(cita);
+                System.out.println("Las 2 fechas son las mismas");
+            }
+//            System.out.println(date.toString());
+//            System.out.println(fecha.toString());
         }
+        request.setAttribute("listaCitas", listaCitasFecha);
+        String siguiente = "citas.jsp";
+        rd = request.getRequestDispatcher(siguiente);
+        rd.forward(request, response);
+        
+//        request.setAttribute("listaExpediente", date);
+//        String siguiente = "expediente.jsp";
+//        rd = request.getRequestDispatcher(siguiente);
+//        rd.forward(request, response);
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -108,3 +117,4 @@ public class IniciarSesion extends HttpServlet {
     }// </editor-fold>
 
 }
+
