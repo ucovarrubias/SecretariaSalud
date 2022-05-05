@@ -18,21 +18,39 @@
             
         %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <!-- Bootstrap 5 link -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <title>Lista de citas</title>
     </head>
     <body>
-        <h1>Lista de citas</h1>
-        <%
-            if(!listaCitas.isEmpty()){
-                for(Cita c: listaCitas){ 
-                %>
-        <h6><%= c.getHoraCita() %></h6>
-        <h6><%= c.getAccesoExpediente()%></h6>
-        <h6><%= c.getPacienteId()%></h6>
-        <form action="consultarExpediente?id=<%= c.getPacienteId()%>" method="POST">
-            <button type="submit">Consultar expediente</button>
-        </form>
-        
+        <div class="container">
+            <div class="row">
+            <h1>Lista de citas</h1>
+            <%
+                if(!listaCitas.isEmpty()){
+                    for(Cita c: listaCitas){ 
+                    %>
+                <table class="table table-striped">
+                    <thead>
+                        <th>Fecha</th>
+                        <th>Estado expediente</th>
+                        <th>Nombre del paciente</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <td><%= c.getHoraCita() %></td>
+                        <td><%= c.getAccesoExpediente()%></td>
+                        <td><%= c.getNombrePaciente()%></td>
+                        <td>
+                            <form action="consultarExpediente?id=<%= c.getNombrePaciente()%>" method="POST">
+                                <button type="submit">Consultar expediente</button>
+                            </form>
+                        </td>
+                    <tbody>
+
+                </table>
+            </div>
+        </div>
                 <%
                 }
             }
