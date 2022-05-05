@@ -64,9 +64,10 @@ public class CitasDAO extends BaseDAO<Cita>{
                 Integer id = resultado.getInt("id_cita");
                 String horaCita = resultado.getString("hora_cita");
                 Boolean accesoExpediente = resultado.getBoolean("acceso_expediente");
+                Integer pacienteId = resultado.getInt("id_paciente");
                 String nombrePaciente = resultado.getString("nombre");
 
-                Cita cita = new Cita(id, horaCita, accesoExpediente, nombrePaciente, idTrabajador);
+                Cita cita = new Cita(id, horaCita, accesoExpediente, pacienteId, nombrePaciente, idTrabajador);
                 System.out.println(cita);
                 listaCitas.add(cita);
             }

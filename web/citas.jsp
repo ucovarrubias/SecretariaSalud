@@ -42,12 +42,12 @@
                         <td><%= c.getAccesoExpediente()%></td>
                         <td><%= c.getNombrePaciente()%></td>
                         <td>
-                            <form action="consultarExpediente?id=<%= c.getNombrePaciente()%>" method="POST">
+                            <form action="consultarExpediente" method="POST">
+                                <input type="hidden" name="id" value="<%= c.getPacienteId()%>" />
                                 <button type="submit">Consultar expediente</button>
                             </form>
                         </td>
                     <tbody>
-
                 </table>
             </div>
         </div>

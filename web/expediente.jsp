@@ -18,19 +18,39 @@
             
         %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <title>Expediente</title>
     </head>
     <body>
-        <h1>Expediente</h1>
-        <%
-            if(!listaExpediente.isEmpty()){
-                for(Expediente e: listaExpediente){ 
-                %>
-        <img src="<%= e.getImagen() %>">
-        
-                <%
-                }
-            }
-        %>
+        <div class="container">
+            <div class="row">
+                <h1>Expediente</h1>
+                <table class="table table-striped">
+                    <thead>
+                        <th>Documento</th>
+                        <th>Tipo de documento</th>
+                        <th>Descripci&oacute;n</th>
+                    </thead>
+                    <tbody>
+                    <%
+                    if(!listaExpediente.isEmpty()){
+                        for(Expediente e: listaExpediente){ 
+                    %>    
+                    <tr>
+                        <td><embed src="<%= e.getArchivo() %>"></td>
+                        <td><%= e.getTipoDocumento() %></td>
+                        <td><%= e.getDescripcion() %></td>
+                    </tr>    
+                    <%
+                        }
+                    }
+                    %>
+                    </tbody>
+                </table>
+                <div>
+                    <button class="btn btn-primary">Agregar a expediente</button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
