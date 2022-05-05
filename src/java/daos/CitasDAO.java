@@ -53,7 +53,10 @@ public class CitasDAO extends BaseDAO<Cita>{
         try{
             Connection conexion = this.generarConexion();
             Statement comando = conexion.createStatement();
-            String codigoSQL = String.format("SELECT id_cita, hora_cita, acceso_expediente, id_paciente FROM citas WHERE id_trabajador_salud = '%d'",
+            String codigoSQL = String.format("SELECT citas.id_cita, citas.hora_cita, citas.acceso_expediente, citas.id_paciente, paciente.nombre FROM citas "
+                    + "LEFT JOIN paciente "
+                    + "ON citas.id_paciente = paciente.id_paciente "
+                    + "WHERE id_trabajador_salud = '%d'",
                     idTrabajador
             );
             ResultSet resultado = comando.executeQuery(codigoSQL);
@@ -61,9 +64,9 @@ public class CitasDAO extends BaseDAO<Cita>{
                 Integer id = resultado.getInt("id_cita");
                 String horaCita = resultado.getString("hora_cita");
                 Boolean accesoExpediente = resultado.getBoolean("acceso_expediente");
-                Integer idPaciente = resultado.getInt("id_paciente");
+                String nombrePaciente = resultado.getString("nombre");
 
-                Cita cita = new Cita(id, horaCita, accesoExpediente, idPaciente, idTrabajador);
+                Cita cita = new Cita(id, horaCita, accesoExpediente, nombrePaciente, idTrabajador);
                 System.out.println(cita);
                 listaCitas.add(cita);
             }
