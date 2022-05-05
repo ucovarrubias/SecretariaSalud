@@ -4,28 +4,48 @@
  */
 package dominio;
 
-import java.io.File;
+import java.io.InputStream;
 
 /**
  *
  * @author ucova
  */
 public class Expediente {
+    private Integer expedienteId;
     private String nombre;
-    private File archivo;
+    private InputStream archivo;
     private String tipoDocumento;
+    private String fecha;
     private String descripcion;
     private Integer pacienteId;
 
     public Expediente() {
     }
 
-    public Expediente(String nombre, File archivo, String tipoDocumento, String descripcion, Integer pacienteId) {
+    public Expediente(String nombre, InputStream archivo, String tipoDocumento, String descripcion, Integer pacienteId) {
         this.nombre = nombre;
         this.archivo = archivo;
         this.tipoDocumento = tipoDocumento;
         this.descripcion = descripcion;
         this.pacienteId = pacienteId;
+    }
+
+    public Expediente(Integer expedienteId, String nombre, InputStream archivo, String tipoDocumento, String fecha, String descripcion, Integer pacienteId) {
+        this.expedienteId = expedienteId;
+        this.nombre = nombre;
+        this.archivo = archivo;
+        this.tipoDocumento = tipoDocumento;
+        this.fecha = fecha;
+        this.descripcion = descripcion;
+        this.pacienteId = pacienteId;
+    }
+
+    public Integer getExpedienteId() {
+        return expedienteId;
+    }
+
+    public void setExpedienteId(Integer expedienteId) {
+        this.expedienteId = expedienteId;
     }
 
     public String getNombre() {
@@ -36,11 +56,11 @@ public class Expediente {
         this.nombre = nombre;
     }
     
-    public File getArchivo() {
+    public InputStream getArchivo() {
         return archivo;
     }
 
-    public void setArchivo(File archivo) {
+    public void setArchivo(InputStream archivo) {
         this.archivo = archivo;
     }
 
@@ -50,6 +70,14 @@ public class Expediente {
 
     public void setTipoDocumento(String tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
     public String getDescripcion() {

@@ -5,25 +5,26 @@
 package negocio;
 
 import daos.BaseDAO;
-import daos.CitasDAO;
 import daos.ExpedientesDAO;
-import dominio.Cita;
 import dominio.Expediente;
-import dominio.Paciente;
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 /**
  *
  * @author ucova
  */
-public class ConsultarExpediente extends HttpServlet {
+@MultipartConfig(maxFileSize = 16177215)
+public class AgregarExpediente extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,20 +39,28 @@ public class ConsultarExpediente extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         RequestDispatcher rd;
+        String nombre = (String) request.getParameter("nombre");
         
-        Integer id = Integer.parseInt(request.getParameter("pacienteId"));
-        String nombrePaciente = request.getParameter("nombrePaciente");
+        InputStream inputStream = null;
+        Part filePart = request.getPart("archivo");
+        if (filePart != null) {
+            inputStream = filePart.getInputStream();
+        }
 
+        String tipoArchivo = (String) request.getParameter("tipoArchivo");
+        String comentarios = (String) request.getParameter("comentarios");
+        Integer pacienteId = Integer.parseInt(request.getParameter("pacienteId"));
+        
         BaseDAO<Expediente> expedienteDAO = new ExpedientesDAO();
         
-        ArrayList<Expediente> listaExpediente = expedienteDAO.consultarPorId(id);
+        Expediente exp = new Expediente(nombre, inputStream, tipoArchivo, comentarios, pacienteId);
         
-        request.setAttribute("listaExpediente", listaExpediente);
-        request.setAttribute("nombrePaciente", nombrePaciente);
-        request.setAttribute("pacienteId", id);
-        String siguiente = "expediente.jsp";
-        rd = request.getRequestDispatcher(siguiente);
-        rd.forward(request, response);        
+        expedienteDAO.insertar(exp);
+        
+        request.setAttribute("pacienteId", pacienteId);
+        request.setAttribute("nombrePaciente", request.getParameter("nombrePaciente"));
+        rd = request.getRequestDispatcher("consultarExpediente");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

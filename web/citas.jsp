@@ -52,21 +52,28 @@
                     <tbody>
 
                         <td><%= c.getHoraCita() %></td>
-                        <td><%= c.getAccesoExpediente()%></td>
+                        <% if (c.getAccesoExpediente() == true){%>
+                            <td> Abierto </td>
+                        <% } else { %>
+                            <td> Cerrado </td>
+                        <% } %>
                         <td><%= c.getNombrePaciente()%></td>
                         <td>
                             <form action="consultarExpediente" method="POST">
-                                <input type="hidden" name="id" value="<%= c.getPacienteId()%>" />
-                                <button type="submit">Consultar expediente</button>
-
+                                <input type="hidden" name="pacienteId" value="<%= c.getPacienteId()%>" />
+                                <input type="hidden" name="nombrePaciente" value="<%= c.getNombrePaciente()%>" />
+                                <% if (c.getAccesoExpediente() == true){%>
+                                    <button type="submit">Consultar expediente</button>
+                                <% } else { %>
+                                    <button type="submit" disabled>Consultar expediente</button>
+                                <% } %>
                             </form>
                         </td>
                     <tbody>
-
-                <%
-                }
-            }
-        %>
+                            <%
+                            }
+                        }
+                    %>
                 </table>
             </div>
         </div>

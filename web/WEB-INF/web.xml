@@ -12,6 +12,14 @@
         <servlet-name>consultarExpediente</servlet-name>
         <servlet-class>negocio.ConsultarExpediente</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>descargarArchivo</servlet-name>
+        <servlet-class>negocio.DescargarArchivo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>agregarExpediente</servlet-name>
+        <servlet-class>negocio.AgregarExpediente</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>iniciarSesion</servlet-name>
         <url-pattern>/iniciarSesion</url-pattern>
@@ -23,6 +31,14 @@
     <servlet-mapping>
         <servlet-name>consultarExpediente</servlet-name>
         <url-pattern>/consultarExpediente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>descargarArchivo</servlet-name>
+        <url-pattern>/descargarArchivo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>agregarExpediente</servlet-name>
+        <url-pattern>/agregarExpediente</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
